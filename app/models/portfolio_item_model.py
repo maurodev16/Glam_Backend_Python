@@ -7,7 +7,7 @@ class PortfolioItem(Base):
     __tablename__ = "portfolio_items"
 
     id = Column(Integer, primary_key=True, index=True)
-    professional_id = Column(Integer, ForeignKey("professionals.id"), nullable=False)
+    employee_id = Column(Integer, ForeignKey("employees.id"), nullable=False)
     salon_id = Column(Integer, ForeignKey("salons.id"), nullable=False)
     image_url = Column(String(255), nullable=False)
     description = Column(Text, nullable=True)
@@ -15,6 +15,6 @@ class PortfolioItem(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     # Relationships
-    professional = relationship("Professional", backref="portfolio_items")
+    employee = relationship("Employee", backref="portfolio_items")
     salon = relationship("Salon", back_populates="portfolio_items")
     service = relationship("Service", backref="portfolio_items")

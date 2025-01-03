@@ -20,5 +20,5 @@ class Service(Base):
     appointments = relationship("Appointment", back_populates="service")
     
     # Ajuste para resolver o conflito
-    professional_services = relationship("ProfessionalService", back_populates="service", overlaps="professionals")
+    employee_services = relationship("EmployeeService", back_populates="service", overlaps="employees")
 

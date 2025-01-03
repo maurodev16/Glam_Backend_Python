@@ -1,11 +1,11 @@
-from fastapi import Depends, FastAPI
-from sqlalchemy.orm import Session
-from app.core.middleware import configure_middleware
-from app.core.database import engine, Base, get_db
+# main.py
+from fastapi import FastAPI
+from app.core.database import engine, Base
+from app.core.middleware.middleware_config import configure_middlewares
+from app.routers import health, users, salons, auth
 import logging
 
-# Import dos routers
-from app.routers import auth_router, health_router, salons_router # All Routers 
+from app.core.middleware.tenant_middleware import TenantMiddleware
 
 logging.basicConfig(
     level=logging.INFO,
@@ -20,19 +20,19 @@ def create_application() -> FastAPI:
         description="API for salon management",
     )
     
-    # Configura middleware
-    configure_middleware(app)
+    # Configure middlewares
+    configure_middlewares(app)
+    app.add_middleware(TenantMiddleware)
     
     # Inclui todos os routers
-    app.include_router(health_router.router)
-    app.include_router(auth_router.router)
-    app.include_router(salons_router.router)
-
+    app.include_router(health.router)
+    app.include_router(auth.router)
+    app.include_router(users.router)
+    app.include_router(salons.router)
     
     @app.on_event("startup")
     async def startup_event():
         logger.info("API started successfully")
-        # Opcional: criar tabelas do banco de dados durante o startup
         Base.metadata.create_all(bind=engine)
     
     @app.on_event("shutdown")

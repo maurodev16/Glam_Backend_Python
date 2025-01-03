@@ -7,6 +7,8 @@ class Salon(Base):
     __tablename__ = "salons"
 
     id = Column(Integer, primary_key=True, index=True)
+    tenant_id = Column(Integer, ForeignKey("tenants.id"), nullable=False)
+    is_public = Column(Boolean, default=True)  # Se o salão aparece em buscas públicas
     name = Column(String(100), nullable=False)
     description = Column(Text)
     address = Column(String(200), nullable=False)
@@ -24,9 +26,10 @@ class Salon(Base):
     owner_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
     
     # Relationships with cascade delete
+    tenant = relationship("Tenant", back_populates="salons")
     owner = relationship("User", back_populates="owned_salons")
     services = relationship("Service", back_populates="salon", cascade="all, delete-orphan")
-    professionals = relationship("Professional", back_populates="salon", cascade="all, delete-orphan")
+    employees = relationship("Employee", back_populates="salon", cascade="all, delete-orphan")
     appointments = relationship("Appointment", back_populates="salon", cascade="all, delete-orphan")
     business_hours = relationship("BusinessHours", back_populates="salon", cascade="all, delete-orphan")
     portfolio_items = relationship("PortfolioItem", back_populates="salon", cascade="all, delete-orphan")

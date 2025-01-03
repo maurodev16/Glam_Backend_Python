@@ -12,8 +12,10 @@ class Settings(BaseSettings):
     DB_POOL_SIZE: int = 10
     DB_MAX_OVERFLOW: int = 20
     JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
+    JWT_REFRESH_TOKEN_EXPIRE_DAYS: int = 7
+    SECRET_KEY_REFRESH: str 
     ENVIRONMENT: str = "development"  # valor padrão alterado para development
-    ALLOWED_ORIGINS: str | List[str] = ["http://localhost:6060"]  # valor padrão para desenvolvimento
+    ALLOWED_ORIGINS: str | List[str] = ["*"]  # valor padrão para desenvolvimento
     
     @property
     def is_development(self) -> bool:
@@ -27,6 +29,8 @@ class Settings(BaseSettings):
     
     @property
     def cors_origins(self) -> List[str]:
+        if self.ALLOWED_ORIGINS == "*":
+            return ["*"]  # Aceitar todas as origens (somente para desenvolvimento)
         """Processa as origens permitidas para CORS"""
         if isinstance(self.ALLOWED_ORIGINS, str):
             try:
@@ -53,3 +57,20 @@ class Settings(BaseSettings):
 def get_settings() -> Settings:
     """Retorna uma instância cacheada das configurações"""
     return Settings()
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'level': 'DEBUG',
+        },
+    },
+    'loggers': {
+        'app.core.middleware': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+    },
+}

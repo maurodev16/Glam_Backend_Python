@@ -7,7 +7,7 @@ class Appointment(Base):
     __tablename__ = "appointments"
 
     id = Column(Integer, primary_key=True, index=True)
-    professional_id = Column(Integer, ForeignKey("professionals.id", ondelete="CASCADE"), nullable=False)
+    employee_id = Column(Integer, ForeignKey("employees.id", ondelete="CASCADE"), nullable=False)
     client_id = Column(Integer, ForeignKey("clients.id", ondelete="CASCADE"), nullable=False)
     service_id = Column(Integer, ForeignKey("services.id",ondelete="CASCADE"), nullable=False)
     salon_id = Column(Integer, ForeignKey("salons.id",ondelete="CASCADE"), nullable=False)
@@ -17,7 +17,7 @@ class Appointment(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     # Relationships
-    professional = relationship("Professional", back_populates="appointments")  # Nome correto
+    employee = relationship("Employee", back_populates="appointments")  # Nome correto
     client = relationship("Client", back_populates="appointments")
     service = relationship("Service", back_populates="appointments")
     salon = relationship("Salon", back_populates="appointments")
