@@ -1,8 +1,12 @@
-from app.services.user.password_service import PasswordService
-from app.services.user.update_service import UpdateUserService
+# app/services/user/__init__.py
+from .get_service import ReadUserService
+from .update_service import UpdateUserService
+from .delete_service import DeleteUserService
+from .validation_service import UserValidationService
 
 class UserService:
-    update_user = UpdateUserService.update_user
-    update_password = PasswordService.update_password
+    get = ReadUserService.get
+    update = UpdateUserService.update
+    delete = DeleteUserService.delete
 
 __all__ = ['UserService']

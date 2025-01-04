@@ -2,7 +2,7 @@
 from fastapi import FastAPI
 from app.core.database import engine, Base
 from app.core.middleware.middleware_config import configure_middlewares
-from app.routers import health, users, salons, auth
+from app.routers import health, users, salons, auth, commission
 import logging
 
 from app.core.middleware.tenant_middleware import TenantMiddleware
@@ -29,6 +29,7 @@ def create_application() -> FastAPI:
     app.include_router(auth.router)
     app.include_router(users.router)
     app.include_router(salons.router)
+    app.include_router(commission.router)
     
     @app.on_event("startup")
     async def startup_event():

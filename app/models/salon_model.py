@@ -34,3 +34,4 @@ class Salon(Base):
     business_hours = relationship("BusinessHours", back_populates="salon", cascade="all, delete-orphan")
     portfolio_items = relationship("PortfolioItem", back_populates="salon", cascade="all, delete-orphan")
     ratings = relationship("Rating", back_populates="salon", cascade="all, delete-orphan")
+    commissions = relationship("Commission", back_populates="salon")

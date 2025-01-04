@@ -2,7 +2,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from app.core.permissions import check_permissions
+from app.core.permissions import user_permissions
 from ....core.database import get_db
 from ....models import user_model as models
 from app.dtos.user import responses
@@ -20,7 +20,7 @@ async def update_user_status(
     db: Session = Depends(get_db)
 ):
     """Update user status (admin only)"""
-    if not check_permissions(current_user, [UserRole.ADMIN]):
+    if not user_permissions(current_user, [UserRole.ADMIN]):
         raise HTTPException(status_code=403, detail="Not authorized")
     
     user = db.query(models.User).filter(models.User.id == user_id).first()

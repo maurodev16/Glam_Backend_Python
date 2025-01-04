@@ -27,3 +27,4 @@ class User(Base):
     owned_salons = relationship("Salon", back_populates="owner", cascade="all, delete-orphan")
     client = relationship("Client", back_populates="user", cascade="all, delete-orphan", uselist=False)
     employee = relationship("Employee", back_populates="user", cascade="all, delete-orphan", uselist=False)
+    commissions = relationship("Commission", back_populates="employee")
