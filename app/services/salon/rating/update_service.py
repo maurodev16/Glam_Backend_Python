@@ -16,7 +16,7 @@ class UpdateRatingService:
         try:
             rating = await GetRatingService.execute(db, rating_id)
             
-            if rating.client_id != user_id:
+            if rating.user_id != user_id:
                 raise HTTPException(
                     status_code=status.HTTP_403_FORBIDDEN,
                     detail="Not authorized to update this rating"

@@ -7,7 +7,7 @@ from app.models.user_model import User
 from app.services.user.upgrade_service import UpgradeService
 from app.dtos.user.requests import UpgradeToBusinessDTO
 from app.dtos.user.responses import UpgradeToBusinessResponseDTO
-from app.routers.auth.dependencies import get_current_user
+from app.routers.auth.dependencies.dependecies import get_current_user
 
 router = APIRouter()
 

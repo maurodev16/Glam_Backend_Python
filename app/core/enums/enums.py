@@ -8,3 +8,7 @@ class UserRole(str, enum.Enum):
 class StatusRole(str, enum.Enum):
     ACTIVE = "active"
     INACTIVE = "inactive"
+    
+class DocumentType(str, enum.Enum):
+    CPF = "cpf"
+    CNPJ = "cnpj"

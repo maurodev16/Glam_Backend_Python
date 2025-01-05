@@ -7,7 +7,7 @@ class Rating(Base):
     __tablename__ = "ratings"
 
     id = Column(Integer, primary_key=True, index=True)
-    client_id = Column(Integer, ForeignKey("clients.id"), nullable=False)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     salon_id = Column(Integer, ForeignKey("salons.id"), nullable=False)
     rating = Column(Integer, nullable=False)
     comment = Column(Text, nullable=True)
@@ -22,5 +22,5 @@ class Rating(Base):
     )
 
     # Relationships
-    client = relationship("Client", back_populates="ratings")
+    user = relationship("User", back_populates="ratings")
     salon = relationship("Salon", back_populates="ratings")

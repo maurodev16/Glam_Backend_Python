@@ -7,7 +7,7 @@ from app.core.database import get_db
 from app.dtos.user.requests import UpdatePasswordDTO, UpdateUserDTO
 from app.dtos.user.responses import UserResponseDTO
 from app.services.user import UserService
-from ..dependencies import get_current_user
+from ..dependencies.dependecies import get_current_user
 from ....models import user_model as models
 import logging
 

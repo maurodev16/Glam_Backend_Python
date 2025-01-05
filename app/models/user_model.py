@@ -4,7 +4,6 @@ from sqlalchemy.sql import func
 from app.core.database import Base
 from app.core.enums.enums import UserRole
 from app.core.enums.enums import StatusRole
-
     
 class User(Base):
     __tablename__ = "users"
@@ -22,9 +21,9 @@ class User(Base):
     
     # Adicione o relacionamento com tenant
     tenant = relationship("Tenant", backref="users")
-
     # Relationships with cascade delete
     owned_salons = relationship("Salon", back_populates="owner", cascade="all, delete-orphan")
-    client = relationship("Client", back_populates="user", cascade="all, delete-orphan", uselist=False)
     employee = relationship("Employee", back_populates="user", cascade="all, delete-orphan", uselist=False)
     commissions = relationship("Commission", back_populates="employee")
+    appointments = relationship("Appointment", back_populates="user", cascade="all, delete-orphan")
+    ratings = relationship("Rating", back_populates="user", cascade="all, delete-orphan")

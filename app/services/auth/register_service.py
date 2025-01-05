@@ -24,10 +24,11 @@ class RegisterService:
         except SQLAlchemyError as e:
             logger.error(f"Database error during registration: {str(e)}")
             db.rollback()
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="An error occurred while creating the user"
-            )
+            raise
+            #  HTTPException(
+            #     status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            #     detail="An error occurred while creating the user"
+            # )
 
     @staticmethod
     async def _validate_unique_fields(db: Session, user_data: RegisterUserDTO):

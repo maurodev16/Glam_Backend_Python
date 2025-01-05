@@ -3,7 +3,7 @@ from pydantic import BaseModel, Field
 from typing import Optional
 
 class CreateRatingDTO(BaseModel):
-    client_id: int
+    user_id: int
     salon_id: int
     rating: int = Field(..., ge=1, le=5, description="Rating value between 1 and 5")
     comment: Optional[str] = Field(None, max_length=500)
@@ -11,7 +11,7 @@ class CreateRatingDTO(BaseModel):
     model_config = {
         "json_schema_extra": {
             "example": {
-                "client_id": 1,
+                "user_id": 1,
                 "salon_id": 1,
                 "rating": 5,
                 "comment": "Excellent service!"

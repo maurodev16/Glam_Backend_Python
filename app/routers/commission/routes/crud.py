@@ -6,7 +6,7 @@ from app.models.user_model import User
 from app.services.commission import CommissionService
 from app.dtos.commission.requests import CreateCommissionDTO, UpdateCommissionDTO
 from app.dtos.commission.responses import CommissionResponseDTO
-from app.routers.auth.dependencies import get_current_user
+from app.routers.auth.dependencies.dependecies import get_current_user
 from app.core.permissions.salon_permissions import SalonPermissions
 
 router = APIRouter()

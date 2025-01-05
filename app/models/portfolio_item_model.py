@@ -11,10 +11,10 @@ class PortfolioItem(Base):
     salon_id = Column(Integer, ForeignKey("salons.id"), nullable=False)
     image_url = Column(String(255), nullable=False)
     description = Column(Text, nullable=True)
-    service_id = Column(Integer, ForeignKey("services.id"), nullable=True)
+    offering_service_id = Column(Integer, ForeignKey("offering_service.id"), nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     # Relationships
     employee = relationship("Employee", backref="portfolio_items")
     salon = relationship("Salon", back_populates="portfolio_items")
-    service = relationship("Service", backref="portfolio_items")
+    offering_service = relationship("OfferingService", backref="portfolio_items")

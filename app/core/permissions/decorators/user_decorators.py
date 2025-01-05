@@ -1,7 +1,7 @@
 from fastapi import Depends, HTTPException, status
 from app.models.user_model import User
 from app.core.enums.enums import UserRole
-from app.routers.auth.dependencies import get_current_user
+from app.routers.auth.dependencies.dependecies import get_current_user
 
 def require_admin():
     async def admin_dependency(

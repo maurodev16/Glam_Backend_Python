@@ -17,7 +17,7 @@ async def validate_rating_data(db: Session, rating_data: CreateRatingDTO) -> Non
 
     # Check for duplicate rating
     existing_rating = db.query(Rating).filter_by(
-        client_id=rating_data.client_id,
+        user_id=rating_data.user_id,
         salon_id=rating_data.salon_id
     ).first()
     

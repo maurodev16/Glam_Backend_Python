@@ -4,7 +4,7 @@ from typing import List
 
 from app.models.commission_model import Commission
 from app.dtos.commission.requests import CreateCommissionDTO, UpdateCommissionDTO
-from app.services.salon.salon_service import SalonService
+
 
 class CommissionService:
     @staticmethod

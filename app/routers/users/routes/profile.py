@@ -6,13 +6,13 @@ from sqlalchemy.orm import Session
 from app.routers.auth.routes.me import update_user
 from app.services.user import UserService
 from app.services.user.update_service import UpdateUserService
+from app.routers.auth.dependencies.dependecies import get_current_user
 
 from ....dtos.user.responses import UserResponseDTO
 from ...users.routes import status
 from ....core.database import get_db
 from ....models import user_model as models
 from ....dtos.user.requests import UpdateUserDTO
-from ...auth.dependencies import get_current_user
 
 router = APIRouter()
 

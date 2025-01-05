@@ -14,6 +14,7 @@ class Salon(Base):
     address = Column(String(200), nullable=False)
     city = Column(String, nullable=False)
     state = Column(String, nullable=False)
+    cnpj = Column(String(14), unique=True, nullable=False)  # CNPJ completo do salão (filial ou matriz)
     zip_code = Column(String, nullable=False)
     phone = Column(String(20), nullable=False)
     email = Column(String, nullable=False)
@@ -24,11 +25,14 @@ class Salon(Base):
     total_ratings = Column(Integer, default=0)
     image_url = Column(String)
     owner_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
+    parent_id = Column(Integer, ForeignKey("salons.id"), nullable=True)  # Para filiais
+    is_headquarters = Column(Boolean, default=False)  # Identifica matriz
     
     # Relationships with cascade delete
     tenant = relationship("Tenant", back_populates="salons")
+    branches = relationship("Salon", backref="headquarters", remote_side=[id])
     owner = relationship("User", back_populates="owned_salons")
-    services = relationship("Service", back_populates="salon", cascade="all, delete-orphan")
+    offering_service = relationship("OfferingService", back_populates="salon", cascade="all, delete-orphan")
     employees = relationship("Employee", back_populates="salon", cascade="all, delete-orphan")
     appointments = relationship("Appointment", back_populates="salon", cascade="all, delete-orphan")
     business_hours = relationship("BusinessHours", back_populates="salon", cascade="all, delete-orphan")

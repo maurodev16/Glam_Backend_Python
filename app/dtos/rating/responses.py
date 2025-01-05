@@ -5,7 +5,7 @@ from datetime import datetime
 
 class RatingResponseDTO(BaseModel):
     id: int
-    client_id: int
+    user_id: int
     salon_id: int
     rating: int = Field(..., ge=1, le=5)
     comment: Optional[str] = None
@@ -16,7 +16,7 @@ class RatingResponseDTO(BaseModel):
         "json_schema_extra": {
             "example": {
                 "id": 1,
-                "client_id": 1,
+                "user_id": 1,
                 "salon_id": 1,
                 "rating": 5,
                 "comment": "Excellent service!",

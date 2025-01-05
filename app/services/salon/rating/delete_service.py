@@ -8,7 +8,7 @@ class DeleteRatingService:
     async def execute(db: Session, rating_id: int, user_id: int) -> None:
         rating = await GetRatingService.execute(db, rating_id)
         
-        if rating.client_id != user_id:
+        if rating.user_id != user_id:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Not authorized to delete this rating"
