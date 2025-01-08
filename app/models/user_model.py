@@ -8,12 +8,13 @@ from app.models.appointment_model import Appointment
 from app.models.rating_model import Rating
 from app.models.salon_model import Salon
 from .junctions.associations import service_providers
-
+from sqlalchemy.dialects.postgresql import UUID
+import uuid
 class User(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
-    tenant_id = Column(Integer, ForeignKey("tenants.id"), nullable=True)
+    tenant_id = Column(UUID(as_uuid=True), ForeignKey("tenants.id"), nullable=False)
     name = Column(String, nullable=False)
     email = Column(String, unique=True, nullable=False)
     password = Column(String, nullable=False)

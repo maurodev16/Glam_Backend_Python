@@ -35,9 +35,10 @@ class CreateSalonDTO(BaseModel):
             "example": {
                 "name": "Beauty Salon",
                 "description": "A beautiful salon",
-                "address": "123 Main St",
-                "city": "New York",
-                "state": "NY",
+                "address": "Dr Francisco Machado de Campos",
+                "number": "123",
+                "city": "Limeira",
+                "state": "SP",
                 "zip_code": "13478998",
                 "phone": "1234567890",
                 "email": "salon@example.com",
@@ -46,13 +47,12 @@ class CreateSalonDTO(BaseModel):
                 "image_url": "https://example.com/image.jpg",
                 "is_headquarters": False,
                 "parent_id": None,
-                "tenant_id": 1,
                 "use_existing_user": False,
                 "use_same_contact_info": False,
-                "owner_name": "John Doe",
-                "owner_email": "john@example.com",
+                "owner_name": "Mauro Rodrigues",
+                "owner_email": "mauro@example.com",
                 "owner_phone": "9876543210",
-                "owner_password": "1111111"
+                "owner_password": "11111111"
             }
         }
 

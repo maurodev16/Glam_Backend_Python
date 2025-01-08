@@ -1,7 +1,8 @@
 from pydantic import field_validator
 from typing import Dict, Any, Optional
 
-from app.core.validations.document_validator import validate_document
+from app.core.validators.document import validate_document
+
 
 class SalonValidators:
     @field_validator('parent_id')

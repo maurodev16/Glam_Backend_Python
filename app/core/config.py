@@ -1,4 +1,5 @@
 # core/config.py
+from pydantic import Field
 from pydantic_settings import BaseSettings
 from typing import List
 import json
@@ -6,17 +7,17 @@ from functools import lru_cache
 import os
 
 class Settings(BaseSettings):
-    DATABASE_URL: str
+    NILEDB_URL: str = Field(..., env="NILEDB_URL")  # URL do banco de dados
     JWT_SECRET_KEY: str
     JWT_ALGORITHM: str = "HS256"
     DB_POOL_SIZE: int = 10
     DB_MAX_OVERFLOW: int = 20
-    JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
-    JWT_REFRESH_TOKEN_EXPIRE_DAYS: int = 7
-    SECRET_KEY_REFRESH: str 
-    ENVIRONMENT: str = "development"  # valor padrão alterado para development
-    ALLOWED_ORIGINS: str | List[str] = ["*"]  # valor padrão para desenvolvimento
-    
+    JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = Field(30, gt=0, description="Tempo de expiração do access token em minutos")
+    JWT_REFRESH_TOKEN_EXPIRE_DAYS: int = Field(7, gt=0, description="Tempo de expiração do refresh token em dias")
+    JWT_SECRET_KEY_REFRESH: str 
+    ENVIRONMENT: str = Field("production", env="ENVIRONMENT")  # Ambiente padrão: development
+    ALLOWED_ORIGINS: str | List[str] = ["*"]  # Origem permitida padrão para CORS
+
     @property
     def is_development(self) -> bool:
         """Verifica se o ambiente é de desenvolvimento"""
@@ -29,9 +30,9 @@ class Settings(BaseSettings):
     
     @property
     def cors_origins(self) -> List[str]:
+        """Processa as origens permitidas para CORS"""
         if self.ALLOWED_ORIGINS == "*":
             return ["*"]  # Aceitar todas as origens (somente para desenvolvimento)
-        """Processa as origens permitidas para CORS"""
         if isinstance(self.ALLOWED_ORIGINS, str):
             try:
                 # Tenta converter string JSON em lista
@@ -42,16 +43,15 @@ class Settings(BaseSettings):
         return self.ALLOWED_ORIGINS
 
     def get_database_url(self) -> str:
-        """Retorna a URL do banco de dados apropriada para o ambiente"""
-        if self.is_development:
-            # Para ambiente de desenvolvimento, use uma URL local padrão
-            return "postgresql://postgres:postgres@localhost:5432/scheduling_local_db"
-        return self.DATABASE_URL
+        """Retorna a URL do banco de dados com base no ambiente"""
+        return self.NILEDB_URL
 
     class Config:
-        # A variável 'env_file' vai ser dinâmica com base no valor do ENVIRONMENT
+        # Configura o arquivo .env dinâmico com base no ambiente
         env_file = f".env.{os.getenv('ENVIRONMENT', 'development')}"
         case_sensitive = True
+        extra = "allow"  # Permite variáveis de ambiente extras
+        
 
 @lru_cache()
 def get_settings() -> Settings:

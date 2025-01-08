@@ -1,9 +1,8 @@
 from fastapi import FastAPI
 from app.core.database import engine, Base
 from app.core.middleware.config_middleware import configure_middlewares
-from app.routers import health, tenant, auth, users, salons, business_schedule,category, commission, employee, offering, ratings
+from app.routers import health, tenant, auth, users, salons, business_schedule, category, commission, employee, offering, ratings
 import logging
-
 from app.core.middleware.tenant_middleware import TenantMiddleware
 
 logging.basicConfig(
@@ -23,7 +22,7 @@ def create_application() -> FastAPI:
     configure_middlewares(app)
     app.add_middleware(TenantMiddleware)
     
-    # Inclui todos os routers
+    # Include all routers
     app.include_router(health.router)
     app.include_router(tenant.router)
     app.include_router(auth.router)
@@ -40,14 +39,13 @@ def create_application() -> FastAPI:
     async def startup_event():
         logger.info("API started successfully")
         try:
-            # Criar todas as tabelas se não existirem
+            # Create tables using the engine with AUTOCOMMIT isolation level
             logger.info("Creating tables in the database...")
-            #Base.metadata.drop_all(bind=engine)
-            #logger.info("Tables Droped successfully.")
             Base.metadata.create_all(bind=engine)
             logger.info("Tables created successfully.")
         except Exception as e:
             logger.error(f"Error while creating tables: {e}")
+            raise
     
     @app.on_event("shutdown")
     async def shutdown_event():

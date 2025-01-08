@@ -1,15 +1,34 @@
 # app/core/middleware/tenant_middleware.py
+from contextvars import ContextVar
 from fastapi import Request, HTTPException, status
 from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
 from starlette.responses import Response
+from starlette.requests import Request
+from starlette.datastructures import Headers
 from app.core.security.jwt import decode_token
 import logging
 
 logger = logging.getLogger(__name__)
-
+tenant_id: ContextVar[str] = ContextVar("tenant_id", default=None)
+user_id: ContextVar[str] = ContextVar("user_id", default=None)
 class TenantMiddleware(BaseHTTPMiddleware):
     def __init__(self, app):
-        super().__init__(app)
+        self.app = app
+        
+        # async def __call__(self, scope, receive, send):
+        #     headers = Headers(scope=scope)
+        #     maybe_tenant_id = headers.get("X-Tenant-Id")
+        #     maybe_set_context(maybe_tenant_id, tenant_id)
+        #     request = Request(scope)
+        #     token = request.cookies.get("access_token")
+        #     maybe_user_id = get_user_id_from_valid_token(token)
+        #     logger.debug(f"Maybe user ID: {maybe_user_id}")
+        #     maybe_set_context(maybe_user_id, user_id)
+        #     logger.debug(f"Tenant ID: {tenant_id.get()}, User ID: {user_id.get()}")
+        #     await self.app(scope, receive, send)
+            
+            
+            
         # Define excluded paths as a tuple for better performance
         self.excluded_paths = (
             "/auth/login",

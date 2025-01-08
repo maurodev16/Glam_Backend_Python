@@ -4,7 +4,7 @@ from typing import Optional, List
 from datetime import datetime
 from app.core.enums.enums import UserRole, StatusRole
 from .requests import WorkSchedule
-
+from uuid import UUID
 class EmployeeResponseDTO(BaseModel):
     id: int
     name: str
@@ -18,7 +18,7 @@ class EmployeeResponseDTO(BaseModel):
     work_schedule: Optional[List[WorkSchedule]] = None
     service_ids: List[int] = []
     created_at: datetime
-    tenant_id: Optional[int] = None
+    tenant_id: Optional[UUID] = None
 
     model_config = {
         "from_attributes": True
