@@ -14,7 +14,6 @@ from .salon_creator import SalonCreator
 
 logger = logging.getLogger(__name__)
 
-# app/services/salon/create/create_salon_service.py
 class CreateSalonServiceCrud:
     @staticmethod
     async def execute(
@@ -24,22 +23,38 @@ class CreateSalonServiceCrud:
     ) -> Salon:
         """Orchestrate salon creation process"""
         try:
-            # Handle owner creation/validation first
-            owner = await OwnerHandler.handle_owner(db, salon_data, current_user)
+            # Validar ou criar o proprietário
+            owner = await OwnerHandler.handle_owner(
+                db=db,
+                salon_data=salon_data,
+                current_user=current_user
+            )
             
-            # Handle tenant creation/validation
-            tenant = await TenantHandler.handle_tenant(db, salon_data, owner)
+            # Validar ou criar o tenant associado
+            tenant = await TenantHandler.handle_tenant(
+                db=db,
+                salon_data=salon_data,
+                owner=owner
+            )
             
-            # Create salon and related records
-            salon = await SalonCreator.create_salon(db, salon_data, owner, tenant)
+            # Criar o salão
+            salon = await SalonCreator.create_salon(
+                db=db,
+                salon_data=salon_data,
+                owner=owner,
+                tenant=tenant
+            )
             
+            # Persistir alterações no banco de dados
             db.commit()
+            db.refresh(salon)  # Atualizar o objeto após commit
+            
             return salon
             
         except SQLAlchemyError as e:
-            logger.error(f"Database error creating salon: {str(e)}")
+            logger.error(f"Erro no banco de dados ao criar o salão: {str(e)}")
             db.rollback()
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Error creating salon"
+                detail="Erro ao criar o salão. Tente novamente mais tarde."
             )

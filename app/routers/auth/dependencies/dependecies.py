@@ -45,7 +45,7 @@ async def get_current_user(
                 detail="User not found"
             )
 
-        if user.is_active == StatusRole.inactive:
+        if user.is_active == StatusRole.INACTIVE:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Inactive user"
@@ -78,7 +78,7 @@ async def get_current_user_optional(
             return None
 
         user = db.query(User).filter(User.id == user_id).first()
-        if not user or user.is_active == StatusRole.inactive:
+        if not user or user.is_active == StatusRole.INACTIVE:
             return None
 
         return user

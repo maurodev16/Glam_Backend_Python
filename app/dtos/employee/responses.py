@@ -1,33 +1,24 @@
 # app/dto/employee/responses.py
 from pydantic import BaseModel, EmailStr
-from typing import Optional, List, Dict, Union
+from typing import Optional, List
 from datetime import datetime
-from .requests import WorkingHoursDTO
-
-class EmployeeServiceResponseDTO(BaseModel):
-    id: int
-    service_id: int
-    employee_id: int
-
-    model_config = {
-        "from_attributes": True
-    }
+from app.core.enums.enums import UserRole, StatusRole
+from .requests import WorkSchedule
 
 class EmployeeResponseDTO(BaseModel):
     id: int
     name: str
     email: EmailStr
     phone: str
-    specialties: Optional[str] = None
-    commission_rate: Optional[str] = None
-    is_active: bool
-    working_hours: Optional[Dict[str, Union[WorkingHoursDTO, None]]] = None
+    role: UserRole
+    is_active: StatusRole
+    specialties: Optional[List[str]] = None
     bio: Optional[str] = None
     profile_image: Optional[str] = None
-    user_id: Optional[int]
-    salon_id: int
+    work_schedule: Optional[List[WorkSchedule]] = None
+    service_ids: List[int] = []
     created_at: datetime
-    available_services: List[EmployeeServiceResponseDTO]
+    tenant_id: Optional[int] = None
 
     model_config = {
         "from_attributes": True

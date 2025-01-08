@@ -3,7 +3,6 @@ from sqlalchemy.orm import Session
 from typing import List
 
 from app.core.database import get_db
-from app.models.user_model import User
 from app.services.tenant import TenantService
 from app.dtos.tenant.requests import CreateTenantDTO, UpdateTenantDTO
 from app.dtos.tenant.responses import TenantResponseDTO

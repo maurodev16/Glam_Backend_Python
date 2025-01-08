@@ -11,7 +11,6 @@ class CreateOfferingServiceDTO(BaseModel):
     description: Optional[str] = None
     duration: DurationType
     price: PriceType
-    salon_id: int
     category: Optional[str] = Field(None, max_length=100)
     estimated_duration: Optional[int] = Field(None, ge=0)
 

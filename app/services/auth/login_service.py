@@ -1,6 +1,5 @@
-from multiprocessing import AuthenticationError
 from sqlalchemy.orm import Session
-from fastapi import HTTPException, Response
+from fastapi import HTTPException, status, Response
 import logging
 
 from app.dtos.auth.requests import LoginDTO
@@ -17,8 +16,15 @@ class LoginService:
     @staticmethod
     async def login_user(db: Session, login_data: LoginDTO, response: Response) -> TokenResponseDTO:
         """Authenticate user and generate tokens"""
-        user = await LoginService._authenticate_user(db, login_data)
-        return await LoginService._handle_successful_login(user, response)
+        try:
+            user = await LoginService._authenticate_user(db, login_data)
+            return await LoginService._handle_successful_login(user, response)
+        except Exception as e:
+            logger.error(f"Login error: {str(e)}")
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Incorrect email or password"
+            )
 
     @staticmethod
     async def _authenticate_user(db: Session, login_data: LoginDTO) -> User:
@@ -26,17 +32,22 @@ class LoginService:
         user = db.query(User).filter(User.email == login_data.email).first()
         
         if not user or not verify_password(login_data.password, user.password):
-            raise AuthenticationError("Incorrect email or password")
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Incorrect email or password"
+            )
             
         if user.is_active == StatusRole.INACTIVE:
-            raise AuthenticationError("User account is inactive")
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="User account is inactive"
+            )
             
         return user
 
     @staticmethod
     async def _handle_successful_login(user: User, response: Response) -> TokenResponseDTO:
         """Handle successful login by setting tokens"""
-        # Dados do usuário para os tokens
         token_data = {
             "sub": str(user.id),
             "email": user.email,
@@ -44,11 +55,9 @@ class LoginService:
             "role": user.role.value
         }
         
-        # Create tokens
         access_token = create_access_token(data=token_data)
         refresh_token = create_refresh_token(data=token_data)
         
-        # Set cookies
         response.set_cookie(
             key="access_token",
             value=f"Bearer {access_token}",

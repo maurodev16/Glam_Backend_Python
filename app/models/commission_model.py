@@ -1,13 +1,11 @@
-from sqlalchemy import Column, Integer, Float, ForeignKey, Enum as SQLEnum, DateTime
+from sqlalchemy import Column, Integer, Float, ForeignKey, Enum as SQLEnum, DateTime, func
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from enum import Enum
 
 from app.core.database import Base
+from app.core.enums.enums import CommissionType
 
-class CommissionType(str, Enum):
-    FIXED = "fixed"
-    PERCENTAGE = "percentage"
 
 class Commission(Base):
     __tablename__ = "commissions"
@@ -17,9 +15,8 @@ class Commission(Base):
     salon_id = Column(Integer, ForeignKey("salons.id"), nullable=False)
     commission_type = Column(SQLEnum(CommissionType), nullable=False)
     value = Column(Float, nullable=False)  # Percentage or fixed amount
-    created_at = Column(DateTime, default=lambda: datetime.now(datetime.timezone.utc))
-    updated_at = Column(DateTime, default=lambda: datetime.now(datetime.timezone.utc), onupdate=lambda: datetime.now(datetime.timezone.utc))
-
+    created_at = Column(DateTime, server_default=func.now())
+    updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
     # Relationships
     employee = relationship("User", back_populates="commissions")
     salon = relationship("Salon", back_populates="commissions")

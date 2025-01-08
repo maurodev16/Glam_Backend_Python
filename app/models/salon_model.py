@@ -32,10 +32,16 @@ class Salon(Base):
     tenant = relationship("Tenant", back_populates="salons")
     branches = relationship("Salon", backref="headquarters", remote_side=[id])
     owner = relationship("User", back_populates="owned_salons")
-    offering_service = relationship("OfferingService", back_populates="salon", cascade="all, delete-orphan")
-    employees = relationship("Employee", back_populates="salon", cascade="all, delete-orphan")
+    services = relationship("OfferingService", back_populates="salon", cascade="all, delete-orphan")
+    employees = relationship(
+        "User",
+        secondary="salon_employees",
+        back_populates="employed_at"
+    )
     appointments = relationship("Appointment", back_populates="salon", cascade="all, delete-orphan")
     business_hours = relationship("BusinessHours", back_populates="salon", cascade="all, delete-orphan")
+    business_days = relationship("BusinessDay", back_populates="salon", cascade="all, delete-orphan")
+    holidays = relationship("Holiday", back_populates="salon", cascade="all, delete-orphan")
     portfolio_items = relationship("PortfolioItem", back_populates="salon", cascade="all, delete-orphan")
     ratings = relationship("Rating", back_populates="salon", cascade="all, delete-orphan")
     commissions = relationship("Commission", back_populates="salon")

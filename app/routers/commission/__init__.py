@@ -2,7 +2,11 @@
 from fastapi import APIRouter
 from .routes import crud
 
-router = APIRouter(prefix="/commissions", tags=["commissions"])
+
+router = APIRouter(
+    prefix="/salons/{salon_id}/employees/{employee_id}/commissions",
+    tags=["commissions"]
+)
 router.include_router(crud.router)
 
 __all__ = ['router']

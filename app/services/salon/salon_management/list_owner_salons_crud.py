@@ -19,7 +19,7 @@ class ListOwnerSalonsServiceCrud:
                 db.query(Salon)
                 .filter(
                     Salon.owner_id == user.id,
-                    Salon.is_active == StatusRole.active
+                    Salon.is_active == StatusRole.ACTIVE
                 )
                 .order_by(Salon.created_at.desc())
                 .all()

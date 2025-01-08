@@ -1,41 +1,37 @@
 # app/dto/employee/requests.py
-from pydantic import BaseModel, EmailStr
-from typing import Optional, List, Dict, Union
+from pydantic import BaseModel, EmailStr, Field, confloat
+from typing import Optional, List
 from datetime import time
+from app.core.enums.enums import CommissionType
 
-class WorkingHoursDTO(BaseModel):
-    start: time
-    end: time
+class WorkSchedule(BaseModel):
+    day: str
+    start_time: time
+    end_time: time
 
-class WorkingScheduleDTO(BaseModel):
-    monday: Optional[WorkingHoursDTO]
-    tuesday: Optional[WorkingHoursDTO]
-    wednesday: Optional[WorkingHoursDTO]
-    thursday: Optional[WorkingHoursDTO]
-    friday: Optional[WorkingHoursDTO]
-    saturday: Optional[WorkingHoursDTO]
-    sunday: Optional[WorkingHoursDTO]
+class CommissionData(BaseModel):
+    commission_type: CommissionType
+    value: float = Field(..., gt=0, le=100)  # Percentage (0-100) or fixed amount
 
 class CreateEmployeeDTO(BaseModel):
     name: str
     email: EmailStr
     phone: str
-    specialties: Optional[str] = None
-    commission_rate: Optional[str] = None
-    working_hours: Optional[Dict[str, Union[WorkingHoursDTO, None]]] = None
+    password: str
+    specialties: Optional[List[str]] = None
     bio: Optional[str] = None
     profile_image: Optional[str] = None
-    salon_id: int
-    user_id: Optional[int] = None
+    work_schedule: Optional[List[WorkSchedule]] = None
     service_ids: List[int] = []
+    commission: CommissionData
 
 class UpdateEmployeeDTO(BaseModel):
     name: Optional[str] = None
     email: Optional[EmailStr] = None
     phone: Optional[str] = None
-    specialties: Optional[str] = None
-    commission_rate: Optional[str] = None
-    working_hours: Optional[Dict[str, Union[WorkingHoursDTO, None]]] = None
+    specialties: Optional[List[str]] = None
     bio: Optional[str] = None
     profile_image: Optional[str] = None
+    work_schedule: Optional[List[WorkSchedule]] = None
     service_ids: Optional[List[int]] = None
+    commission: Optional[CommissionData] = None
