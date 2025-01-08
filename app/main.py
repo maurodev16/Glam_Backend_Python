@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from app.core.database import engine, Base
 from app.core.middleware.config_middleware import configure_middlewares
-from app.routers import health, tenant, auth, users, salons, business_schedule, commission, employee, offering, ratings
+from app.routers import health, tenant, auth, users, salons, business_schedule,category, commission, employee, offering, ratings
 import logging
 
 from app.core.middleware.tenant_middleware import TenantMiddleware
@@ -30,6 +30,7 @@ def create_application() -> FastAPI:
     app.include_router(users.router)
     app.include_router(salons.router)
     app.include_router(employee.router)
+    app.include_router(category.router)
     app.include_router(offering.router)
     app.include_router(ratings.router)
     app.include_router(business_schedule.router)

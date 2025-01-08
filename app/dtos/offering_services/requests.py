@@ -11,7 +11,7 @@ class CreateOfferingServiceDTO(BaseModel):
     description: Optional[str] = None
     duration: DurationType
     price: PriceType
-    category: Optional[str] = Field(None, max_length=100)
+    category_id: Optional[int] = None
     estimated_duration: Optional[int] = Field(None, ge=0)
 
 class UpdateOfferingServiceDTO(BaseModel):
@@ -19,5 +19,5 @@ class UpdateOfferingServiceDTO(BaseModel):
     description: Optional[str] = None
     duration: Optional[Decimal] = Field(None, ge=0)
     price: PriceType
-    category: Optional[str] = Field(None, max_length=100)
+    category_id: Optional[int] = None
     estimated_duration: Optional[int] = Field(None, ge=0)

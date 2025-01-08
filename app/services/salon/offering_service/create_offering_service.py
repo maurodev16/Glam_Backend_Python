@@ -4,6 +4,7 @@ from app.dtos.offering_services.requests import CreateOfferingServiceDTO
 from app.models.offering_services_model import OfferingService
 from app.models.user_model import User
 from app.models.salon_model import Salon
+from app.models.catergories_model import Category
 
 class CreateOfferingService:
     @staticmethod
@@ -29,11 +30,23 @@ class CreateOfferingService:
                 detail="Only salon owner can create services"
             )
 
+        # Verificar se a categoria existe
+        if service_data.category_id:
+            category = db.query(Category).filter(Category.id == service_data.category_id).first()
+            if not category:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail="Category not found"
+                )
+        else:
+            category = None
+
         # Criar o serviço
         try:
             service = OfferingService(
-                salon_id=salon_id,  # Associar ao salão correto
-                **service_data.model_dump()  # Desempacotar os dados do DTO
+                salon_id=salon_id,
+                category=category,  # Associar a categoria se ela existir
+                **service_data.dict(exclude_unset=True)  # Excluir campos não definidos
             )
             db.add(service)
             db.commit()
