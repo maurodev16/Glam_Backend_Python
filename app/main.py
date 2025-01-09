@@ -11,6 +11,7 @@ logging.basicConfig(
     )
 logger = logging.getLogger(__name__)
 
+
 def create_application() -> FastAPI:
         app = FastAPI(
             title="Salon API",
