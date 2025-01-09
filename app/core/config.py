@@ -7,7 +7,7 @@ from functools import lru_cache
 import os
 
 class Settings(BaseSettings):
-    NILEDB_URL: str = Field(..., env="NILEDB_URL")  # URL do banco de dados
+    DATABASE_URL: str = Field(..., env="DATABASE_URL")  # URL do banco de dados
     JWT_SECRET_KEY: str
     JWT_ALGORITHM: str = "HS256"
     DB_POOL_SIZE: int = 10
@@ -44,7 +44,7 @@ class Settings(BaseSettings):
 
     def get_database_url(self) -> str:
         """Retorna a URL do banco de dados com base no ambiente"""
-        return self.NILEDB_URL
+        return self.DATABASE_URL
 
     class Config:
         # Configura o arquivo .env dinâmico com base no ambiente
