@@ -1,7 +1,7 @@
-from fastapi import FastAPI, APIRouter
+from fastapi import FastAPI
 from app.core.database import engine, Base
 from app.core.middleware.config_middleware import configure_middlewares
-from app.routers import tenant, auth, users, salons, business_schedule, category, commission, employee, offering, ratings
+from app.routers import health, tenant, auth, users, salons, business_schedule, category, commission, employee, offering, ratings
 import logging
 from app.core.middleware.tenant_middleware import TenantMiddleware
 
@@ -10,6 +10,7 @@ logging.basicConfig(
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
     )
 logger = logging.getLogger(__name__)
+
 
 def create_application() -> FastAPI:
         app = FastAPI(
@@ -23,7 +24,7 @@ def create_application() -> FastAPI:
         app.add_middleware(TenantMiddleware)
         
         # Include all routers
-        # app.include_router(health.router) # Removed health router
+        app.include_router(health.router)
         app.include_router(tenant.router)
         app.include_router(auth.router)
         app.include_router(users.router)
@@ -34,10 +35,6 @@ def create_application() -> FastAPI:
         app.include_router(ratings.router)
         app.include_router(business_schedule.router)
         app.include_router(commission.router)
-        
-        @app.get("/", tags=["health"])
-        async def health_check():
-            return {"status": "ok"}
         
         @app.on_event("startup")
         async def startup_event():
