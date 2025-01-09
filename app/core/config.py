@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = Field(30, gt=0, description="Tempo de expiração do access token em minutos")
     JWT_REFRESH_TOKEN_EXPIRE_DAYS: int = Field(7, gt=0, description="Tempo de expiração do refresh token em dias")
     JWT_SECRET_KEY_REFRESH: str 
-    ENVIRONMENT: str = Field("production", env="ENVIRONMENT")  # Ambiente padrão: development
+    ENVIRONMENT: str = Field("development", env="ENVIRONMENT")  # Ambiente padrão: development
     ALLOWED_ORIGINS: str | List[str] = ["*"]  # Origem permitida padrão para CORS
 
     @property

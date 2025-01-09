@@ -2,14 +2,8 @@ from pydantic import BaseModel
 from datetime import datetime, date, time
 from typing import Optional
 from app.dtos.user.responses import UserResponseDTO
-
-from enum import Enum
-
-class AppointmentStatus(str, Enum):
-    SCHEDULED = 'scheduled'
-    COMPLETED = 'completed'
-    CANCELLED = 'cancelled'
-
+from app.core.enums.enums import AppointmentStatus
+from app.dtos.offering_services.responses import ServiceOfferingResponseDTO
 class AppointmentResponseDTO(BaseModel):
     id: int
     employee_id: int
@@ -25,9 +19,9 @@ class AppointmentResponseDTO(BaseModel):
         from_attributes = True
 
 class AppointmentDetailDTO(AppointmentResponseDTO):
-    employee: Optional[employeeResponseDTO] = None
+    employee: Optional[UserResponseDTO] = None
     user: Optional[UserResponseDTO] = None
-    service: Optional[ServiceResponseDTO] = None
+    service: Optional[ServiceOfferingResponseDTO] = None
 
     class Config:
         from_attributes = True

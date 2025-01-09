@@ -3,10 +3,8 @@ from datetime import date, time
 from enum import Enum
 from typing import Optional
 
-class AppointmentStatus(str, Enum):
-    SCHEDULED = 'scheduled'
-    COMPLETED = 'completed'
-    CANCELLED = 'cancelled'
+from app.core.enums.enums import AppointmentStatus
+
 
 class AppointmentBaseRequest(BaseModel):
     professional_id: int
