@@ -9,7 +9,6 @@ from app.core.enums.enums import DocumentType
 # In Tenant model:
 class Tenant(Base):
     __tablename__ = "tenants"
-    __nile_tenant_model__ = True
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
     business_name = Column(String, nullable=False)
     email = Column(String, unique=True, nullable=False)

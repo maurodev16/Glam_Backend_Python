@@ -22,8 +22,7 @@ def create_database_engine():
             poolclass=QueuePool,
             pool_size=settings.DB_POOL_SIZE,
             max_overflow=settings.DB_MAX_OVERFLOW,
-            isolation_level='AUTOCOMMIT', # Importante: permite DDL fora de transações
-            connect_args={'options': '-c search_path=public,nile'}
+            isolation_level='AUTOCOMMIT'  # Importante: permite DDL fora de transações
         )
         logger.info("Conexão com o banco de dados configurada com sucesso.")
         return engine

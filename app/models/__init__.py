@@ -12,4 +12,4 @@ from .commission_model import Commission
 
 
 # This allows importing all models from the models package
-__all__ = ['Base', 'Tenant', 'User','associations', 'Salon',Commission, 'OfferingService', 'Appointment', 'BusinessHours', 'BusinessDay','Holiday', 'PortfolioItem', 'Rating']
+__all__ = ['Base', 'Tenant', 'User', 'Salon',Commission, 'OfferingService', 'Appointment', 'BusinessHours', 'BusinessDay','Holiday', 'PortfolioItem', 'Rating']

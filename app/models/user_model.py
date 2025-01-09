@@ -3,11 +3,10 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from app.core.database import Base
 from app.core.enums.enums import UserRole, StatusRole
-from app.models.junctions.associations import salon_employees
+from app.models.junctions.associations import salon_employees, service_providers
 from app.models.appointment_model import Appointment
 from app.models.rating_model import Rating
 from app.models.salon_model import Salon
-from .junctions.associations import service_providers
 from sqlalchemy.dialects.postgresql import UUID
 import uuid
 class User(Base):
@@ -30,7 +29,7 @@ class User(Base):
     # Relationships
     tenant = relationship("Tenant", back_populates="users")
     owned_salons = relationship("Salon", back_populates="owner")
-    employed_at = relationship("Salon",secondary="salon_employees", back_populates="employees")
+    employed_at = relationship("Salon",secondary=salon_employees, back_populates="employees")
     services = relationship(
         "OfferingService",
         secondary=service_providers,
