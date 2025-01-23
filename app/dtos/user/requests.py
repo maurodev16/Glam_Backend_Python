@@ -5,6 +5,7 @@ from uuid import UUID
 class UpdateUserDTO(BaseModel):
     name: Optional[str] = None
     email: Optional[EmailStr] = None
+    profile_image: Optional[str] = None
     phone: Optional[str] = None
     role: Optional[UserRole] = None
     is_active: Optional[StatusRole] = None

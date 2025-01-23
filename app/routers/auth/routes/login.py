@@ -45,7 +45,4 @@ async def login(
     except AuthenticationError as auth_error:
         logger.error(f"Authentication error: {str(auth_error)}")
         raise
-    except Exception as e:
-        logger.error(f"Login error: {str(e)}")
-        raise AuthenticationError("Authentication failed")
-
+ 

@@ -5,9 +5,8 @@ from app.models.tenant_model import Tenant
 from app.dtos.salon.requests import CreateSalonDTO
 from typing import List
 import logging
-
-from app.dtos.business_hours.requests import CreateBusinessHoursDTO
-from app.models.business_schedule_model import BusinessHours, Holiday, BusinessDay
+from app.models.business_schedule_model import BusinessHours
+from app.dtos.business_schedule.business_hours.requests import CreateBusinessHoursRequestDTO
 
 logger = logging.getLogger(__name__)
 
@@ -60,7 +59,7 @@ class SalonCreator:
     async def _create_business_hours(
         db: Session,
         salon_id: int,
-        business_hours_data: List[CreateBusinessHoursDTO]
+        business_hours_data: List[CreateBusinessHoursRequestDTO]
     ):
         """Create business hours records"""
         for hours in business_hours_data:

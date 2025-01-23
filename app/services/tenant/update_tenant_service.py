@@ -11,7 +11,7 @@ class UpdateTenantService:
         return await UpdateTenantService._update_tenant(db, tenant, tenant_data)
     
     @staticmethod
-    async def _get_tenant(db: Session, tenant_id: int) -> Tenant:
+    async def _get_tenant(db: Session, tenant_id: str) -> Tenant:
         tenant = db.query(Tenant).filter(Tenant.id == tenant_id).first()
         if not tenant:
             raise HTTPException(

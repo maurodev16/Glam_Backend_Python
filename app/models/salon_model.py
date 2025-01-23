@@ -1,11 +1,12 @@
+from sqlalchemy import Column, Enum as SQLAlchemyEnum
 from sqlalchemy import Column, String, Integer, Float, Boolean, Text, ForeignKey, DateTime, UniqueConstraint, ForeignKeyConstraint
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from app.core.database import Base
 from sqlalchemy.dialects.postgresql import UUID
+from app.core.enums.enums import StatusRole
 from .junctions.associations import salon_employees
 import uuid
-
 from sqlalchemy import Column, String, Integer, Float, Boolean, Text, ForeignKey, DateTime, UniqueConstraint, ForeignKeyConstraint, event
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
@@ -30,7 +31,7 @@ class Salon(Base):
     zip_code = Column(String, nullable=False)
     phone = Column(String(20), nullable=False)
     email = Column(String, nullable=False)
-    is_active = Column(Boolean, default=True)
+    is_active = Column(SQLAlchemyEnum(StatusRole), default=StatusRole.ACTIVE)
     rating = Column(Float, default=0)
     total_ratings = Column(Integer, default=0)
     image_url = Column(String)
@@ -53,8 +54,8 @@ class Salon(Base):
     services = relationship("OfferingService", back_populates="salon", cascade="all, delete-orphan")
     employees = relationship("User", secondary=salon_employees, back_populates="employed_at")
     appointments = relationship("Appointment", back_populates="salon", cascade="all, delete-orphan")
-    business_hours = relationship("BusinessHours", back_populates="salon", cascade="all, delete-orphan")
     business_days = relationship("BusinessDay", back_populates="salon", cascade="all, delete-orphan")
+    business_hours = relationship("BusinessHours", back_populates="salon", cascade="all, delete-orphan")
     holidays = relationship("Holiday", back_populates="salon", cascade="all, delete-orphan")
     portfolio_items = relationship("PortfolioItem", back_populates="salon", cascade="all, delete-orphan")
     ratings = relationship("Rating", back_populates="salon", cascade="all, delete-orphan")

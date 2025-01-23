@@ -5,7 +5,7 @@ from app.models.tenant_model import Tenant
 
 class GetTenantService:
     @staticmethod
-    async def get_by_id(db: Session, tenant_id: int) -> Tenant:
+    async def get_by_id(db: Session, tenant_id: str) -> Tenant:
         """Get tenant by ID"""
         tenant = db.query(Tenant).filter(Tenant.id == tenant_id).first()
         if not tenant:

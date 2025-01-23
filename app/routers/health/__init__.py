@@ -4,7 +4,7 @@ from fastapi import APIRouter
 from app.routers.health.routes import health
 
 router = APIRouter(
-    tags=["health"],
+    tags=["API-Health"],
     responses={
         503: {"description": "Service Unavailable"}
     }

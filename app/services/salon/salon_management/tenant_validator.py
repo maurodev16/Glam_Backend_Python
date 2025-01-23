@@ -2,7 +2,8 @@ from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
 from typing import Optional
 import logging
-
+from sqlalchemy.dialects.postgresql import UUID
+import uuid
 from app.models.tenant_model import Tenant
 from app.models.user_model import User
 
@@ -10,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 class TenantValidationService:
     @staticmethod
-    async def validate_tenant(db: Session, tenant_id: int) -> Tenant:
+    async def validate_tenant(db: Session, tenant_id: str) -> Tenant:
         """Validate tenant existence and return tenant"""
         tenant = db.query(Tenant).filter(Tenant.id == tenant_id).first()
         if not tenant:
@@ -22,7 +23,7 @@ class TenantValidationService:
         return tenant
 
     @staticmethod
-    async def validate_tenant_access(db: Session, tenant_id: int, user: User) -> Tenant:
+    async def validate_tenant_access(db: Session, tenant_id: str, user: User) -> Tenant:
         """Validate tenant existence and user access"""
         tenant = await TenantValidationService.validate_tenant(db, tenant_id)
         
@@ -35,10 +36,10 @@ class TenantValidationService:
         return tenant
 
     @staticmethod
-    async def validate_tenant_id(db: Session, tenant_id: Optional[int]) -> Optional[int]:
+    async def validate_tenant_id(db: Session, tenant_id: Optional[str]) -> Optional[str]:
         """Validate tenant_id in update operations"""
         if tenant_id is not None:
-            if tenant_id == 0:
+            if tenant_id == "":
                 return None
             
             tenant = await TenantValidationService.validate_tenant(db, tenant_id)

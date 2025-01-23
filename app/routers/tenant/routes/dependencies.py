@@ -1,12 +1,12 @@
+from uuid import UUID
 from fastapi import Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from app.core.database import get_db
 from app.models.tenant_model import Tenant
 from app.models.user_model import User
 from app.routers.auth.dependencies.dependecies import get_current_user
-
 async def get_tenant_by_id(
-    tenant_id: int,
+    tenant_id: UUID,
     db: Session = Depends(get_db)
 ) -> Tenant:
     """Get tenant by ID"""

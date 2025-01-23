@@ -5,7 +5,7 @@ from .routes import crud
 
 router = APIRouter(
     prefix="/salons/{salon_id}/category",
-    tags=["commissions"]
+    tags=["Type-Of-Categories"]
 )
 router.include_router(crud.router)
 

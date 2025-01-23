@@ -8,6 +8,7 @@ from app.dtos.tenant.responses import TenantResponseDTO
 class UserResponseDTO(BaseModel):
     id: int
     name: str
+    email: EmailStr
     phone: str
     role: UserRole
     is_active: StatusRole

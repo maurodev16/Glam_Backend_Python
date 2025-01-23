@@ -4,7 +4,7 @@ from app.models.tenant_model import Tenant
 
 class DeleteTenantService:
     @staticmethod
-    async def delete(db: Session, tenant_id: int) -> None:
+    async def delete(db: Session, tenant_id: str) -> None:
         """Delete tenant"""
         tenant = db.query(Tenant).filter(Tenant.id == tenant_id).first()
         if not tenant:

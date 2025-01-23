@@ -1,11 +1,18 @@
+from uuid import UUID
 from pydantic import BaseModel, EmailStr, Field
 from typing import Optional, List
 from typing_extensions import Annotated
 from pydantic import StringConstraints
-from app.dtos.business_hours.requests import CreateBusinessHoursDTO
+
+from app.dtos.business_schedule.business_hours.requests import CreateBusinessHoursRequestDTO
+
+
+
+DEFAULT_IMAGE_URL = "https://g5vqujw8iglfdivd.public.blob.vercel-storage.com/logo_empty-rND59FWNzO1cOzfSHOGlApp6nnllOz.png"
 
 class CreateSalonDTO(BaseModel):
     # Salon Information
+    tenant_id: Optional[UUID] = None
     name: str = Field(..., min_length=2, max_length=100)
     description: Optional[str] = None
     address: str = Field(..., max_length=200)
@@ -16,20 +23,11 @@ class CreateSalonDTO(BaseModel):
     email: EmailStr
     cnpj: Optional[Annotated[str, StringConstraints(min_length=14, max_length=14,)]] = None
     is_public: bool = True
-    image_url: Optional[str] = None
+    image_url: Optional[str] = Field(default=DEFAULT_IMAGE_URL)
     is_headquarters: bool = False
-    parent_id: Optional[int] = None
-    tenant_id: Optional[int] = None  # Make tenant_id optional since it will be handled automatically
-    business_hours: Optional[List[CreateBusinessHoursDTO]] = None
+    parent_id: Optional[int] = None  # Make tenant_id optional since it will be handled automatically
+    business_hours: Optional[List[CreateBusinessHoursRequestDTO]] = None
     
-    # Owner Information (for new user creation)
-    use_existing_user: bool = False
-    use_same_contact_info: bool = False
-    owner_name: Optional[str] = Field(None, min_length=2, max_length=100)
-    owner_email: Optional[EmailStr] = None
-    owner_phone: Optional[str] = Field(None, min_length=10, max_length=15)
-    owner_password: Optional[str] = Field(None, min_length=8)
-
     class Config:
         json_schema_extra = {
             "example": {
@@ -44,15 +42,10 @@ class CreateSalonDTO(BaseModel):
                 "email": "salon@example.com",
                 "cnpj": "12345678901234",
                 "is_public": True,
-                "image_url": "https://example.com/image.jpg",
+                "image_url": DEFAULT_IMAGE_URL,
                 "is_headquarters": False,
                 "parent_id": None,
-                "use_existing_user": False,
-                "use_same_contact_info": False,
-                "owner_name": "Mauro Rodrigues",
-                "owner_email": "mauro@example.com",
-                "owner_phone": "9876543210",
-                "owner_password": "11111111"
+             
             }
         }
 
@@ -70,7 +63,6 @@ class UpdateSalonDTO(BaseModel):
     image_url: Optional[str] = None
     is_headquarters: Optional[bool] = None
     parent_id: Optional[int] = None
-    business_hours: Optional[List[CreateBusinessHoursDTO]] = None
 
     class Config:
         json_schema_extra = {

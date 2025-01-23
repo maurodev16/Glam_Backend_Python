@@ -30,18 +30,8 @@ class User(Base):
     tenant = relationship("Tenant", back_populates="users")
     owned_salons = relationship("Salon", back_populates="owner")
     employed_at = relationship("Salon",secondary=salon_employees, back_populates="employees")
-    services = relationship(
-        "OfferingService",
-        secondary=service_providers,
-        back_populates="providers",
-        overlaps="available_services"
-    )
-    available_services = relationship(
-        "OfferingService",
-        secondary=service_providers,
-        back_populates="providers",
-        overlaps="services"
-    )
+    services = relationship( "OfferingService",secondary=service_providers,back_populates="providers",overlaps="available_services")
+    available_services = relationship("OfferingService",secondary=service_providers,back_populates="providers",overlaps="services")
     commissions = relationship("Commission", back_populates="employee")
     appointments_provided = relationship("Appointment",foreign_keys=[Appointment.provider_id],back_populates="provider" )
     appointments_booked = relationship("Appointment", foreign_keys=[Appointment.client_id], back_populates="client")

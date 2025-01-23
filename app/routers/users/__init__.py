@@ -6,7 +6,7 @@ from app.routers.users.routes import crud, profile, status, upgrade
 
 router = APIRouter(
     prefix="/users",
-    tags=["users"],
+    tags=["Users"],
     responses={401: {"description": "Not authenticated"}}
 )
 

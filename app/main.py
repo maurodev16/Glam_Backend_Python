@@ -1,9 +1,10 @@
 from fastapi import FastAPI
 from app.core.database import engine, Base
 from app.core.middleware.config_middleware import configure_middlewares
-from app.routers import health, tenant, auth, users, salons, business_schedule, category, commission, employee, offering, ratings
-import logging
 from app.core.middleware.tenant_middleware import TenantMiddleware
+from app.routers import health, tenant, auth, users, salons, category, commission, employee, offering, ratings, days, hour, holidays
+import logging
+
 
 logging.basicConfig(
         level=logging.INFO,
@@ -33,7 +34,9 @@ def create_application() -> FastAPI:
         app.include_router(category.router)
         app.include_router(offering.router)
         app.include_router(ratings.router)
-        app.include_router(business_schedule.router)
+        app.include_router(days.router)
+        app.include_router(hour.router)
+        app.include_router(holidays.router)
         app.include_router(commission.router)
         
         @app.on_event("startup")

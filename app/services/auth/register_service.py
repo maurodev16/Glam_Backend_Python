@@ -55,7 +55,7 @@ class RegisterService:
         user = User(
             **user_data.model_dump(exclude={"password"}),
             password=get_password_hash(user_data.password),
-            tenant_id=tenant_id
+            tenant_id=tenant_id,
         )
 
         db.add(user)

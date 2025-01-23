@@ -11,7 +11,7 @@ def create_refresh_token(data: dict) -> str:
     to_encode.update({"exp": expire, "type": "refresh"})
     return jwt.encode(
         to_encode,
-        settings.SECRET_KEY_REFRESH,
+        settings.JWT_SECRET_KEY_REFRESH,
         algorithm=settings.JWT_ALGORITHM
     )
 
@@ -19,7 +19,7 @@ def decode_refresh_token(token: str) -> dict:
     try:
         payload = jwt.decode(
             token,
-            settings.SECRET_KEY_REFRESH,
+            settings.JWT_SECRET_KEY_REFRESH,
             algorithms=[settings.JWT_ALGORITHM]
         )
         if payload.get("type") != "refresh":

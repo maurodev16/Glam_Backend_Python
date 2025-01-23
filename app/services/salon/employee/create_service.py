@@ -36,7 +36,8 @@ class CreateEmployeeService:
                 tenant_id=current_user.tenant_id,
                 bio=employee_data.bio,
                 profile_image=employee_data.profile_image,
-                commission_rate=employee_data.commission.value
+                commission_rate=employee_data.commission.value,
+                
             )
             
             db.add(employee)

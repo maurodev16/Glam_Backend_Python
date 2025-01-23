@@ -7,7 +7,7 @@ from app.routers.auth.routes import login, register, logout, me, refresh
 
 router = APIRouter(
     prefix="/auth",
-    tags=["authentication"],
+    tags=["Authentication"],
     responses={
         401: {"description": "Authentication failed"},
         403: {"description": "Forbidden"},

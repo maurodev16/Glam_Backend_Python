@@ -11,7 +11,7 @@ from app.dtos.salon.responses import SalonResponseDTO, SalonListResponseDTO
 from app.services.salon.salon_management import (
     CreateSalonServiceCrud,
     GetSalonServiceCrud,
-    ListSalonServiceCrud,
+    ListSalonsServiceCrud,
     DeleteSalonServiceCrud,
     ListOwnerSalonsServiceCrud,
     UpdateSalonServiceCrud
@@ -43,10 +43,7 @@ async def create_salon(
     try:
         return await CreateSalonServiceCrud.execute(db, salon_data, current_user)
     except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=str(e)
-        )
+        raise 
 
 @router.get(
     "/",
@@ -63,7 +60,7 @@ async def list_salons(
 ) -> List[SalonListResponseDTO]:
     """List all public salons"""
     try:
-        return await ListSalonServiceCrud.execute(db, skip, limit)
+        return await ListSalonsServiceCrud.execute(db, skip, limit,)
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -92,6 +89,8 @@ async def get_my_salons(
             detail=str(e)
         )
 
+
+
 @router.get(
     "/{salon_id}",
     response_model=SalonResponseDTO,
@@ -103,11 +102,12 @@ async def get_my_salons(
 )
 async def get_salon(
     salon_id: int,
+    
     db: Session = Depends(get_db)
 ) -> SalonResponseDTO:
     """Get salon details by ID"""
     try:
-        salon = await GetSalonServiceCrud.execute(db, salon_id)
+        salon = await GetSalonServiceCrud.execute(db=db, salon_id=salon_id)
         if not salon:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
@@ -135,12 +135,13 @@ async def get_salon(
 async def update_salon(
     salon_id: int,
     salon_data: UpdateSalonDTO,
+    service_id: int,
     current_user: User = Depends(require_salon_owner),
     db: Session = Depends(get_db)
 ) -> SalonResponseDTO:
     """Update salon information"""
     try:
-        return await UpdateSalonServiceCrud.execute(db, salon_id, salon_data, current_user)
+        return await UpdateSalonServiceCrud.execute(db=db, salon_id=salon_id, service_data=salon_data, current_user=current_user, service_id=service_id)
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,

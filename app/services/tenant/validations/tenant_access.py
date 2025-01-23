@@ -1,4 +1,5 @@
 # app/services/tenant/validations/tenant_access.py
+from uuid import UUID
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
 import logging
@@ -8,7 +9,7 @@ from .tenant_existence import validate_tenant
 
 logger = logging.getLogger(__name__)
 
-async def validate_tenant_access(db: Session, tenant_id: int, user: User) -> Tenant:
+async def validate_tenant_access(db: Session, tenant_id: UUID, user: User) -> Tenant:
     """Validate tenant existence and user access"""
     tenant = await validate_tenant(db, tenant_id)
     

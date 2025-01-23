@@ -2,5 +2,5 @@
 from fastapi import APIRouter
 
 from .routes import  crud
-router = APIRouter(prefix="/salons{salon_id}/ratings", tags=["ratings"])
+router = APIRouter(prefix="/salons{salon_id}/ratings", tags=["Salon-Ratings"])
 router.include_router(crud.router)
